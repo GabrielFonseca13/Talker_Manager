@@ -1,8 +1,8 @@
 const express = require('express');
-const fs = require('fs').promises;
-const { join } = require('path');
+// const fs = require('fs').promises;
+// const { join } = require('path');
 
-const path = '/src/talker.json';
+// const path = '/src/talker.json';
 const talkerFile = require('./talkerFile');
 
 const app = express();
