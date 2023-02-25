@@ -1,4 +1,5 @@
 const express = require('express');
+const validateLogin = require('./middlewares/validateLogin');
 // const fs = require('fs').promises;
 // const { join } = require('path');
 // const path = '/src/talker.json';
@@ -38,11 +39,7 @@ app.get('/talker/:id', async (req, res) => {
   res.status(200).json(talker);
 });
 
-app.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  if ([email, password].includes(undefined)) {
-    return res.status(401).json({ message: 'Campos ausentes' });
-  }
+app.post('/login', validateLogin, async (_req, res) => {
   const token = generateToken();
   return res.status(200).json({ token });
 });
