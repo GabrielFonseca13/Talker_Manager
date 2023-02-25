@@ -65,3 +65,22 @@ app.post('/talker',
     await talkerFile.writeTalkerFile(newTalker);
     res.status(201).json(newTalker);
 });
+
+app.put('/talker/:id', 
+auth,
+validateName,
+validateAge,
+validateTalk,
+validateWatchedAt,
+validateRate,
+async (req, res) => {
+  const id = Number(req.params.id);
+  // const { name, age, talk } = req.body;
+  const talkers = await talkerFile.getAllTalkers();
+  const talker = talkers.find((person) => person.id === id);
+  const index = talkers.indexOf(talker);
+  const updated = { id, ...req.body };
+  talkers.splice(index, 1, updated);
+  await talkerFile.writeTalkerFile(updated);
+  res.status(200).json(updated);
+});
