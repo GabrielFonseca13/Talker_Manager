@@ -17,6 +17,16 @@ const readTalkerFile = async () => {
   }
 };
 
+const writeTalkerFile = async (newTalker) => {
+  try {
+    const allTalkers = await readTalkerFile();
+    allTalkers.push(newTalker);
+    await fs.writeFile(talkerPath, JSON.stringify(allTalkers));
+  } catch (error) {
+    console.error('error: ', error.message);
+  }
+};
+
 const getAllTalkers = async () => {
   const allTalkers = await readTalkerFile();
   if (allTalkers.lenght === 0) return [];
@@ -30,6 +40,7 @@ const getTalkerById = async (id) => {
 
 module.exports = {
   readTalkerFile,
+  writeTalkerFile,
   getAllTalkers,
   getTalkerById,
 };
