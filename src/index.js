@@ -27,6 +27,22 @@ app.listen(PORT, () => {
 
 //  STARTS
 
+app.get('/talker/search', 
+  auth,
+  async (req, res) => {
+  const searchTerm = req.query.q;
+  const talkers = await talkerFile.getAllTalkers();
+  if (searchTerm.length === 0) {
+    return res.status(200).json(talkers);
+  }
+  const filteredTalkers = talkers.filter((talker) => talker.name.includes(searchTerm));
+  
+  if (filteredTalkers.length === 0) {
+    return res.status(200).json([]);
+  }
+  return res.status(200).json(filteredTalkers);
+});
+
 app.get('/talker', async (req, res) => {
   const allTalkers = await talkerFile.getAllTalkers();
   res.status(200).json(allTalkers);
@@ -75,7 +91,6 @@ validateWatchedAt,
 validateRate,
 async (req, res) => {
   const id = Number(req.params.id);
-  // const { name, age, talk } = req.body;
   const talkers = await talkerFile.getAllTalkers();
   const talker = talkers.find((person) => person.id === id);
   const index = talkers.indexOf(talker);
