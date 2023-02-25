@@ -84,3 +84,13 @@ async (req, res) => {
   await talkerFile.writeTalkerFile(updated);
   res.status(200).json(updated);
 });
+
+app.delete('/talker/:id',
+  auth,
+  async (req, res) => {
+  const id = Number(req.params.id);
+  const talkers = await talkerFile.getAllTalkers();
+  const removedTalker = talkers.filter((person) => person.id !== id);
+  await talkerFile.deleteTalker(removedTalker);
+  res.status(204).json();
+});

@@ -27,6 +27,14 @@ const writeTalkerFile = async (newTalker) => {
   }
 };
 
+const deleteTalker = async (newList) => {
+  try {
+    await fs.writeFile(talkerPath, JSON.stringify(newList));
+  } catch (error) {
+    console.error('error: ', error.message);
+  }
+};
+
 const getAllTalkers = async () => {
   const allTalkers = await readTalkerFile();
   if (allTalkers.lenght === 0) return [];
@@ -43,4 +51,5 @@ module.exports = {
   writeTalkerFile,
   getAllTalkers,
   getTalkerById,
+  deleteTalker,
 };
