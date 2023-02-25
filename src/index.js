@@ -1,9 +1,11 @@
 const express = require('express');
 // const fs = require('fs').promises;
 // const { join } = require('path');
-
 // const path = '/src/talker.json';
 const talkerFile = require('./talkerFile');
+const generateToken = require('./utils/tokenGenerator');
+
+// const talkerPath = path.resolve(__dirname, './talker.json');
 
 const app = express();
 app.use(express.json());
@@ -35,3 +37,31 @@ app.get('/talker/:id', async (req, res) => {
   }
   res.status(200).json(talker);
 });
+
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  if ([email, password].includes(undefined)) {
+    return res.status(401).json({ message: 'Campos ausentes' });
+  }
+  const token = generateToken();
+  return res.status(200).json({ token });
+});
+
+// rascunho req 5 
+// app.post('/talker', async (req, res) => {
+//   try {
+//     const { name, age, watchedAt, rate } = req.body;
+//     const talkers = await talkerFile.getAllTalkers();
+//     const newTalker = {
+//       id: talkers[talkers.length - 1].id + 1,
+//       name,
+//       age,
+//       talk: { watchedAt, rate },
+//     };
+//     const allTalkers = JSON.stringify([...talkers, newTalker]);
+//     await fs.writeFile(talkerFile, allTalkers);
+//     res.status(201).json(newTalker);
+//   } catch (error) {
+//     return null;
+//   }
+// });
